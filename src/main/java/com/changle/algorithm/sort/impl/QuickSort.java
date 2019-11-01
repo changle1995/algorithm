@@ -1,4 +1,6 @@
-package com.changle.algorithm;
+package com.changle.algorithm.sort.impl;
+
+import com.changle.algorithm.sort.Sort;
 
 import java.util.Random;
 
@@ -15,6 +17,7 @@ public class QuickSort implements Sort {
      *
      * @param array 待排序数组
      */
+    @Override
     public void sort(int[] array) {
         sort(array, 0, array.length - 1);
     }

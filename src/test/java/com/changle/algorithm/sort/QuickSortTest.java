@@ -1,5 +1,6 @@
-package com.changle.algorithm;
+package com.changle.algorithm.sort;
 
+import com.changle.algorithm.sort.impl.QuickSort;
 import org.junit.Test;
 
 import java.util.Arrays;

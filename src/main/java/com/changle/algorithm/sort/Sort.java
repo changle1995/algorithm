@@ -1,4 +1,4 @@
-package com.changle.algorithm;
+package com.changle.algorithm.sort;
 
 /**
  * 排序接口

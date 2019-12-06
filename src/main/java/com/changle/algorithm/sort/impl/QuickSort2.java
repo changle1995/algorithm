@@ -5,14 +5,13 @@ import com.changle.algorithm.sort.Sort;
 import java.util.Random;
 
 /**
- * 快速排序算法类.<br>
- * 每次找出一个数后以这个数为基准排序，左边的小于此数，右边的大于此数
- * 以递归方式对左右两边数按快速排序再次排序
+ * 快速排序算法类
+ * 一次交换两个值版本
  *
  * @author changle
  * @date 2019/11/01
  **/
-public class QuickSort implements Sort {
+public class QuickSort2 implements Sort {
 
     /**
      * 快速排序算法
@@ -67,23 +66,24 @@ public class QuickSort implements Sort {
     public int partition(int[] array, int start, int end) {
         // 取第一个元素为基准值
         int flag = array[start];
+        int left = start;
         // 开始以基准值为参考向两边移动
         while (start < end) {
             // 两个指针还未相遇并且队尾元素大于等于基准数据时，向前挪动end指针
             while (start < end && array[end] >= flag) {
                 end--;
             }
-            // 如果队尾元素小于基准值了，将其赋值给start
-            array[start] = array[end];
             // 两个指针还未相遇并且队首元素小于等于基准值时，向后挪动start指针
             while (start < end && array[start] <= flag) {
                 start++;
             }
-            // 队首元素大于基准值时，将其赋值给end
-            array[end] = array[start];
+            // 直接交换
+            if (start < end) {
+                swap(array, start, end);
+            }
         }
         // 跳出循环时start和end相等，该位置就是基准值的正确位置，将基准值赋给这个位置
-        array[start] = flag;
+        swap(array, left, start);
         return start;
     }
 

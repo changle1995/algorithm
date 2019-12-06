@@ -2,6 +2,7 @@ package com.changle.algorithm.sort;
 
 import com.changle.algorithm.sort.impl.BubbleSort;
 import com.changle.algorithm.sort.impl.QuickSort;
+import com.changle.algorithm.sort.impl.QuickSort2;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -18,46 +19,54 @@ public class SortTest {
     @Test
     public void testSort() {
         // 测试次数
-        int times = 10000;
+        int times = 100;
         // 测试数组长度
         int length = 10000;
         // 测试数组中最大值
         int max = 10000;
-        boolean equals = true;
         // 生成待排序数组
         int[] array = getArray(length, max);
 
         // 第一种排序算法
-
         // 换排序算法只需要修改下面这一行的实现类
-        Sort sort1 = new BubbleSort();
-        long startTime1 = System.currentTimeMillis();
-        for (int i = 1; i <= times; i++) {
-//            System.out.println("---------第" + i + "次-----------");
-            if (!testSortOnce(array, sort1)) {
-                equals = false;
-                break;
-            }
-        }
-        System.out.println("最终结果是否全部相等：" + equals);
-        long endTime1 = System.currentTimeMillis();
-        System.out.println(endTime1 - startTime1);
-
+        testSort(times, array, new BubbleSort());
+        // 第二种排序算法
         // 换排序算法只需要修改下面这一行的实现类
-        Sort sort2 = new QuickSort();
-        long startTime2 = System.currentTimeMillis();
-        for (int i = 1; i <= times; i++) {
-//            System.out.println("---------第" + i + "次-----------");
-            if (!testSortOnce(array, sort2)) {
-                equals = false;
-                break;
-            }
-        }
-        System.out.println("最终结果是否全部相等：" + equals);
-        long endTime2 = System.currentTimeMillis();
-        System.out.println(endTime2 - startTime2);
+        testSort(times, array, new QuickSort());
+        // 第三种排序算法
+        // 换排序算法只需要修改下面这一行的实现类
+        testSort(times, array, new QuickSort2());
     }
 
+    /**
+     * 使用传入的排序算法对传入的数组进行指定此数的排序
+     *
+     * @param times 排序此数
+     * @param array 待排序数组
+     * @param sort  排序算法
+     */
+    public void testSort(int times, int[] array, Sort sort) {
+        boolean equals = true;
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i <= times; i++) {
+//            System.out.println("---------第" + i + "次-----------");
+            if (!testSortOnce(array, sort)) {
+                equals = false;
+                break;
+            }
+        }
+        System.out.println("最终结果是否全部相等：" + equals);
+        long endTime = System.currentTimeMillis();
+        System.out.println("比较" + times + "次总耗时：" + (endTime - startTime));
+    }
+
+    /**
+     * 按照长度和最大值生成数组
+     *
+     * @param length
+     * @param max
+     * @return
+     */
     public int[] getArray(int length, int max) {
         int[] array = new int[length];
         Random random = new Random();
@@ -67,6 +76,13 @@ public class SortTest {
         return array;
     }
 
+    /**
+     * 判断排序算法是否能正确排序
+     *
+     * @param array
+     * @param sort
+     * @return
+     */
     public boolean testSortOnce(int[] array, Sort sort) {
         int[] array1 = new int[array.length];
         int[] array2 = new int[array.length];

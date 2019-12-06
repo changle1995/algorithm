@@ -28,14 +28,15 @@ public class SortTest {
         // 生成待排序数组
         int[] array = getArray(length, max);
 
-        // 第一种排序算法
+        // 各种排序算法比较
         // 换排序算法只需要修改下面这一行的实现类
+        System.out.println("---冒泡---");
+        testSort(times, array, new BubbleSort());
+        System.out.println("---插入---");
         testSort(times, array, new InsertionSort());
-        // 第二种排序算法
-        // 换排序算法只需要修改下面这一行的实现类
+        System.out.println("---快排1版---");
         testSort(times, array, new QuickSort());
-        // 第三种排序算法
-        // 换排序算法只需要修改下面这一行的实现类
+        System.out.println("---快排2版---");
         testSort(times, array, new QuickSort2());
     }
 
@@ -56,7 +57,7 @@ public class SortTest {
                 break;
             }
         }
-        System.out.println("最终结果是否全部相等：" + equals);
+        System.out.println("是否正确排序：" + equals);
         long endTime = System.currentTimeMillis();
         System.out.println("比较" + times + "次总耗时：" + (endTime - startTime));
     }

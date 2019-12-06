@@ -1,9 +1,12 @@
 package com.changle.algorithm.sort;
 
 /**
- * 排序接口
- * <p>
+ * 排序接口<br>
  * 所有的排序算法都要实现这个接口
+ *
+ * @author changle
+ * @version 1.0.0
+ * @date 2019/11/01
  */
 public interface Sort {
 
@@ -26,4 +29,5 @@ public interface Sort {
         array[i] = array[j];
         array[j] = temp;
     }
+
 }

@@ -5,7 +5,7 @@ import com.changle.algorithm.sort.Sort;
 import java.util.Random;
 
 /**
- * 快速排序算法类
+ * 快速排序.<br>
  * 一次交换两个值版本
  *
  * @author changle

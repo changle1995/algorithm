@@ -5,7 +5,7 @@ import com.changle.algorithm.sort.Sort;
 import java.util.Random;
 
 /**
- * 快速排序算法类.<br>
+ * 快速排序.<br>
  * 每次找出一个数后以这个数为基准排序，左边的小于此数，右边的大于此数
  * 以递归方式对左右两边数按快速排序再次排序
  *

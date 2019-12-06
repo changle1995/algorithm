@@ -1,9 +1,6 @@
 package com.changle.algorithm.sort;
 
-import com.changle.algorithm.sort.impl.BubbleSort;
-import com.changle.algorithm.sort.impl.InsertionSort;
-import com.changle.algorithm.sort.impl.QuickSort;
-import com.changle.algorithm.sort.impl.QuickSort2;
+import com.changle.algorithm.sort.impl.*;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -17,27 +14,29 @@ import java.util.Random;
  **/
 public class SortTest {
 
+    // 测试次数
+    private static int SORT_TIMES = 100;
+    // 测试数组长度
+    private static int ARRAY_LENGTH = 10000;
+    // 测试数组中最大值
+    private static int ARRAY_MAX_VALUE = 10000;
+
     @Test
     public void testSort() {
-        // 测试次数
-        int times = 100;
-        // 测试数组长度
-        int length = 10000;
-        // 测试数组中最大值
-        int max = 10000;
-        // 生成待排序数组
-        int[] array = getArray(length, max);
+        int[] array = getArray(ARRAY_LENGTH, ARRAY_MAX_VALUE);
 
         // 各种排序算法比较
         // 换排序算法只需要修改下面这一行的实现类
         System.out.println("---冒泡---");
-        testSort(times, array, new BubbleSort());
+        testSort(SORT_TIMES, array, new BubbleSort());
         System.out.println("---插入---");
-        testSort(times, array, new InsertionSort());
+        testSort(SORT_TIMES, array, new InsertionSort());
         System.out.println("---快排1版---");
-        testSort(times, array, new QuickSort());
+        testSort(SORT_TIMES, array, new QuickSort());
         System.out.println("---快排2版---");
-        testSort(times, array, new QuickSort2());
+        testSort(SORT_TIMES, array, new QuickSort2());
+        System.out.println("---选择---");
+        testSort(SORT_TIMES, array, new SelectioinSort());
     }
 
     /**

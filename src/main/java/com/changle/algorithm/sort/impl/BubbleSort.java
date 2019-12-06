@@ -3,7 +3,7 @@ package com.changle.algorithm.sort.impl;
 import com.changle.algorithm.sort.Sort;
 
 /**
- * 冒泡排序.
+ * 冒泡排序.<br>
  * 每次排序找出最大的数排在最后，因此每次排序之后需要排序的数都少一个
  *
  * @author changle

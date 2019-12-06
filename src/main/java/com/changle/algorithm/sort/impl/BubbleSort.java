@@ -1,0 +1,50 @@
+package com.changle.algorithm.sort.impl;
+
+import com.changle.algorithm.sort.Sort;
+
+/**
+ * 冒泡排序.
+ * 每次排序找出最大的数排在最后，因此每次排序之后需要排序的数都少一个
+ *
+ * @author changle
+ * @version 1.0.0
+ * @date 2019/12/06
+ **/
+public class BubbleSort implements Sort {
+
+    @Override
+    public void sort(int[] array) {
+        // 数据合法性判断
+        if (array == null || array.length < 2) {
+            return;
+        }
+        // 开始比较
+        for (int i = 1; i < array.length; i++) {
+            //设定一个标记，若为true，则表示此次循环没有进行交换，也就是待排序列已经有序，排序已经完成
+            boolean flag = true;
+            for (int j = 0; j < array.length - i; j++) {
+                if (array[j] > array[j + 1]) {
+                    swap(array, j, j + 1);
+                    flag = false;
+                }
+            }
+            if (flag) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * 交换数组中两个位置的值
+     *
+     * @param array 需要进行交换值操作的数组
+     * @param i     待交换值的第一个位置
+     * @param j     待交换值的第二个位置
+     */
+    public void swap(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+}

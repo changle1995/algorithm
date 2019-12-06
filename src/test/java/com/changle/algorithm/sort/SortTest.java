@@ -1,5 +1,6 @@
 package com.changle.algorithm.sort;
 
+import com.changle.algorithm.sort.impl.BubbleSort;
 import com.changle.algorithm.sort.impl.QuickSort;
 import org.junit.Test;
 
@@ -7,21 +8,22 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * 快速排序测试类
+ * 排序测试类
  *
  * @author changle
  * @date 2019/11/01
  **/
-public class QuickSortTest {
+public class SortTest {
 
     @Test
     public void testSort() {
         int times = 10000;
         int length = 10000;
         boolean equals = true;
-        Sort sort = new QuickSort();
+        // 换排序算法只需要修改下面这一行的实现类
+        Sort sort = new BubbleSort();
         for (int i = 1; i <= times; i++) {
-//            System.out.println("---------第" + i + "次-----------");
+            System.out.println("---------第" + i + "次-----------");
             if (!testSortOnce(length, sort)) {
                 equals = false;
                 break;

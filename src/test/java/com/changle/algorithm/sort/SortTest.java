@@ -1,6 +1,7 @@
 package com.changle.algorithm.sort;
 
 import com.changle.algorithm.sort.impl.BubbleSort;
+import com.changle.algorithm.sort.impl.InsertionSort;
 import com.changle.algorithm.sort.impl.QuickSort;
 import com.changle.algorithm.sort.impl.QuickSort2;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class SortTest {
 
         // 第一种排序算法
         // 换排序算法只需要修改下面这一行的实现类
-        testSort(times, array, new BubbleSort());
+        testSort(times, array, new InsertionSort());
         // 第二种排序算法
         // 换排序算法只需要修改下面这一行的实现类
         testSort(times, array, new QuickSort());

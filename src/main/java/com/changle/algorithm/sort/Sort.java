@@ -13,4 +13,17 @@ public interface Sort {
      * @param array 待排序的数组
      */
     void sort(int[] array);
+
+    /**
+     * 交换数组中两个位置的值
+     *
+     * @param array 需要进行交换值操作的数组
+     * @param i     待交换值的第一个位置
+     * @param j     待交换值的第二个位置
+     */
+    default void swap(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }

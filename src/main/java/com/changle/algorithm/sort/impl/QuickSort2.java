@@ -7,6 +7,8 @@ import java.util.Random;
 /**
  * 快速排序.<br>
  * 一次交换两个值版本
+ * 时间复杂度平均为O(nlogn)，最好为O(nlogn)，最差为O(n^2)
+ * 是不稳定的排序算法
  *
  * @author changle
  * @date 2019/11/01

@@ -5,6 +5,8 @@ import com.changle.algorithm.sort.Sort;
 /**
  * 冒泡排序.<br>
  * 每次排序找出最大的数排在最后，因此每次排序之后需要排序的数都少一个
+ * 时间复杂度平均为O(n^2)，最好为O(n)，最差为O(n^2)
+ * 是稳定的排序算法
  *
  * @author changle
  * @version 1.0.0

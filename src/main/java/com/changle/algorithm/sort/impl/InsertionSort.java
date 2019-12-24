@@ -5,12 +5,15 @@ import com.changle.algorithm.sort.Sort;
 /**
  * 插入排序.<br>
  * 将数组分为左边有序区与右边无序区，每次从无序区挑一个插入到有序区直至结束
+ * 时间复杂度平均为O(n^2)，最好为O(n)，最差为O(n^2)
+ * 是稳定的排序算法
  *
  * @author changle
  * @version 1.0.0
  * @date 2019/12/06
  **/
 public class InsertionSort implements Sort {
+
     @Override
     public void sort(int[] array) {
         // 数据合法性判断

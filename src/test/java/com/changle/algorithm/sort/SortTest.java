@@ -37,6 +37,8 @@ public class SortTest {
         testSort(SORT_TIMES, array, new QuickSort2());
         System.out.println("---选择---");
         testSort(SORT_TIMES, array, new SelectioinSort());
+        System.out.println("---希尔---");
+        testSort(SORT_TIMES, array, new ShellSort());
     }
 
     /**

@@ -5,6 +5,8 @@ import com.changle.algorithm.sort.Sort;
 /**
  * 选择排序.<br>
  * 每次循环找出此次最小的值，放在已经排序区的最后
+ * 时间复杂度平均为O(n^2)，最好为O(n^2)，最差为O(n^2)
+ * 是不稳定的排序算法
  *
  * @author changle
  * @version 1.0.0

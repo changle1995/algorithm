@@ -39,6 +39,8 @@ public class SortTest {
         testSort(SORT_TIMES, array, new SelectioinSort());
         System.out.println("---希尔---");
         testSort(SORT_TIMES, array, new ShellSort());
+        System.out.println("---归并---");
+        testSort(SORT_TIMES, array, new MergeSort());
     }
 
     /**

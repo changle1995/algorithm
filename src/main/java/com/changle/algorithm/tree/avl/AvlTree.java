@@ -37,18 +37,4 @@ public class AvlTree<K extends Comparable<K>, V, E extends TreeElement<K, V>> {
         }
         return this.root;
     }
-
-    /**
-     * 删除元素
-     *
-     * @param element 待删除的元素
-     * @return 删除后的树根节点
-     */
-    public AvlTreeNode<K, V, E> delete(E element) {
-        if (this.root != null) {
-            // 根节点不为空，调用根节点的插入方法进行插入操作
-            this.root = this.root.delete(element);
-        }
-        return this.root;
-    }
 }

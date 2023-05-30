@@ -150,14 +150,4 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
             return this;
         }
     }
-
-    /**
-     * 以当前节点为根节点进行删除元素操作
-     *
-     * @param element 待删除的元素
-     * @return 删除后的根节点
-     */
-    public AvlTreeNode<K, V, E> delete(TreeElement<K, V> element) {
-        return this;
-    }
 }

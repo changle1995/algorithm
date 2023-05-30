@@ -40,8 +40,8 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
      * @return 节点的高度
      */
     public int calculateHeight() {
-        int leftHeight = this.getLeft() == null ? 0 : this.getLeft().calculateHeight();
-        int rightHeight = this.getRight() == null ? 0 : this.getRight().calculateHeight();
+        int leftHeight = this.getLeft() == null ? -1 : this.getLeft().calculateHeight();
+        int rightHeight = this.getRight() == null ? -1 : this.getRight().calculateHeight();
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
@@ -51,8 +51,8 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
      * @return 平衡因子
      */
     public int calculateBalanceFactor() {
-        int leftHeight = this.getLeft() == null ? 0 : this.getLeft().getHeight();
-        int rightHeight = this.getRight() == null ? 0 : this.getRight().getHeight();
+        int leftHeight = this.getLeft() == null ? -1 : this.getLeft().getHeight();
+        int rightHeight = this.getRight() == null ? -1 : this.getRight().getHeight();
         return leftHeight - rightHeight;
     }
 

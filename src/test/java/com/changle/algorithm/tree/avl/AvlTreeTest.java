@@ -14,7 +14,7 @@ public class AvlTreeTest {
     @Test
     public void testInsert() {
         AvlTree<Integer, Integer, TreeElement<Integer, Integer>> avlTree = new AvlTree<>();
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < 10; i++) {
             avlTree.insert(new TreeElement<>(i, i));
         }
         print(avlTree.getRoot());

@@ -1,6 +1,6 @@
 package com.changle.algorithm.tree.avl;
 
-import com.changle.algorithm.tree.TreeElement;
+import com.changle.algorithm.tree.Element;
 import org.junit.Test;
 
 /**
@@ -13,9 +13,9 @@ import org.junit.Test;
 public class TreeTest {
     @Test
     public void testInsert() {
-        Tree<Integer, Integer, TreeElement<Integer, Integer>> tree = new Tree<>();
+        Tree<Integer, Integer, Element<Integer, Integer>> tree = new Tree<>();
         for (int i = 1; i < 10; i++) {
-            tree.insert(new TreeElement<>(i, i));
+            tree.insert(new Element<>(i, i));
         }
         print(tree.getRoot());
     }
@@ -39,7 +39,7 @@ public class TreeTest {
         System.out.print(p.str);
     }
 
-    private static void traversalPrint(Node<Integer, Integer, TreeElement<Integer, Integer>> root, Trunk prev, boolean isLeft) {
+    private static void traversalPrint(Node<Integer, Integer, Element<Integer, Integer>> root, Trunk prev, boolean isLeft) {
         if (root == null) {
             return;
         }
@@ -84,7 +84,7 @@ public class TreeTest {
         traversalPrint(root.getRight(), trunk, false);
     }
 
-    public static void print(Node<Integer, Integer, TreeElement<Integer, Integer>> root) {
+    public static void print(Node<Integer, Integer, Element<Integer, Integer>> root) {
         traversalPrint(root, null, false);
     }
 }

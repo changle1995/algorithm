@@ -1,6 +1,6 @@
 package com.changle.algorithm.tree.avl;
 
-import com.changle.algorithm.tree.TreeElement;
+import com.changle.algorithm.tree.Element;
 import lombok.Data;
 
 /**
@@ -11,7 +11,7 @@ import lombok.Data;
  * @date 2023-05-30
  */
 @Data
-public class Node<K extends Comparable<K>, V, E extends TreeElement<K, V>> {
+public class Node<K extends Comparable<K>, V, E extends Element<K, V>> {
     /**
      * 节点数据
      */

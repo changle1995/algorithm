@@ -11,7 +11,7 @@ import lombok.Data;
  * @date 2023-05-30
  */
 @Data
-public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>> {
+public class Node<K extends Comparable<K>, V, E extends TreeElement<K, V>> {
     /**
      * 节点数据
      */
@@ -23,13 +23,13 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
     /**
      * 左子节点
      */
-    private AvlTreeNode<K, V, E> left;
+    private Node<K, V, E> left;
     /**
      * 右子节点
      */
-    private AvlTreeNode<K, V, E> right;
+    private Node<K, V, E> right;
 
-    public AvlTreeNode(E element) {
+    public Node(E element) {
         this.element = element;
         this.height = 0;
     }
@@ -61,9 +61,9 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
      *
      * @return 左旋结束后的根节点
      */
-    public AvlTreeNode<K, V, E> leftRotate() {
+    public Node<K, V, E> leftRotate() {
         // 将待旋转的右子结点保存到临时变量
-        AvlTreeNode<K, V, E> right = getRight();
+        Node<K, V, E> right = getRight();
         // 开始旋转
         // 1. 将右子节点的左子节点设置为当前节点的右子结点
         // 2. 将当前节点设置为右子结点的左子节点
@@ -81,9 +81,9 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
      *
      * @return 右旋结束后的根节点
      */
-    public AvlTreeNode<K, V, E> rightRotate() {
+    public Node<K, V, E> rightRotate() {
         // 将待旋转的左子结点保存到临时变量
-        AvlTreeNode<K, V, E> left = getLeft();
+        Node<K, V, E> left = getLeft();
         // 开始旋转
         // 1. 将左子节点的右子节点设置为当前节点的左子结点
         // 2. 将当前节点设置为左子结点的右子节点
@@ -102,7 +102,7 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
      * @param element 待添加的元素
      * @return 添加后的根节点
      */
-    public AvlTreeNode<K, V, E> insert(E element) {
+    public Node<K, V, E> insert(E element) {
         if (element.getKey().compareTo(getElement().getKey()) == 0) {
             // 根节点key相等，以最新的element直接设置为根节点
             setElement(element);
@@ -110,18 +110,18 @@ public class AvlTreeNode<K extends Comparable<K>, V, E extends TreeElement<K, V>
             return this;
         } else if (element.getKey().compareTo(getElement().getKey()) < 0) {
             // 小于根节点，在左子树进行插入
-            AvlTreeNode<K, V, E> left = getLeft();
+            Node<K, V, E> left = getLeft();
             if (left == null) {
-                left = new AvlTreeNode<>(element);
+                left = new Node<>(element);
             } else {
                 left = left.insert(element);
             }
             setLeft(left);
         } else {
             // 大于根节点，在右子树进行插入
-            AvlTreeNode<K, V, E> right = getRight();
+            Node<K, V, E> right = getRight();
             if (right == null) {
-                right = new AvlTreeNode<>(element);
+                right = new Node<>(element);
             } else {
                 right = right.insert(element);
             }

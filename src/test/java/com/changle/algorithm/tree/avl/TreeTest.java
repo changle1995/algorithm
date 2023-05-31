@@ -10,14 +10,14 @@ import org.junit.Test;
  * @version 1.0
  * @date 2023-05-30
  */
-public class AvlTreeTest {
+public class TreeTest {
     @Test
     public void testInsert() {
-        AvlTree<Integer, Integer, TreeElement<Integer, Integer>> avlTree = new AvlTree<>();
+        Tree<Integer, Integer, TreeElement<Integer, Integer>> tree = new Tree<>();
         for (int i = 1; i < 10; i++) {
-            avlTree.insert(new TreeElement<>(i, i));
+            tree.insert(new TreeElement<>(i, i));
         }
-        print(avlTree.getRoot());
+        print(tree.getRoot());
     }
 
     private static class Trunk {
@@ -39,7 +39,7 @@ public class AvlTreeTest {
         System.out.print(p.str);
     }
 
-    private static void traversalPrint(AvlTreeNode<Integer, Integer, TreeElement<Integer, Integer>> root, Trunk prev, boolean isLeft) {
+    private static void traversalPrint(Node<Integer, Integer, TreeElement<Integer, Integer>> root, Trunk prev, boolean isLeft) {
         if (root == null) {
             return;
         }
@@ -84,7 +84,7 @@ public class AvlTreeTest {
         traversalPrint(root.getRight(), trunk, false);
     }
 
-    public static void print(AvlTreeNode<Integer, Integer, TreeElement<Integer, Integer>> root) {
+    public static void print(Node<Integer, Integer, TreeElement<Integer, Integer>> root) {
         traversalPrint(root, null, false);
     }
 }

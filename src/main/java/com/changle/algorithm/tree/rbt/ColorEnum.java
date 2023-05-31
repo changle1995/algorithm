@@ -12,24 +12,24 @@ public enum ColorEnum {
     /**
      * 红色节点
      */
-    RED(false, "红色节点"),
+    RED(false, "红色"),
     /**
      * 黑色节点
      */
-    BLACK(true, "黑色节点");
+    BLACK(true, "黑色");
     /**
      * 颜色值
      */
     @Getter
-    private final boolean value;
+    private final boolean black;
     /**
      * 颜色说明
      */
     @Getter
     private final String remark;
 
-    ColorEnum(boolean value, String remark) {
-        this.value = value;
+    ColorEnum(boolean black, String remark) {
+        this.black = black;
         this.remark = remark;
     }
 }

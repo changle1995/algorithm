@@ -36,14 +36,50 @@ public class Node<K extends Comparable<K>, V> {
      */
     private ColorEnum color;
 
-    public Node(Element<K, V> element, ColorEnum color) {
+    public Node(Element<K, V> element) {
         this.element = element;
-        this.color = color;
     }
 
-    public Node(Element<K, V> element, Node<K, V> parent, ColorEnum color) {
-        this.element = element;
-        this.parent = parent;
-        this.color = color;
+    /**
+     * 在当前节点上插入一个新的节点
+     *
+     * @param node 需要插入的节点
+     */
+    public void addNode(Node<K, V> node) {
+        if (node == null) {
+            return;
+        }
+        // 比较需要插入的节点与当前节点
+        if (node.element.getKey().compareTo(element.getKey()) < 0) {
+            // 插入节点元素小于当前节点元素
+            if (left == null) {
+                // 当前节点左子节点为空，直接设置为当前节点的左子结点
+                left = node;
+                node.parent = this;
+            } else {
+                // 当前节点左子节点不为空，递归调用左子结点进行插入
+                left.addNode(node);
+            }
+        } else if (node.element.getKey().compareTo(element.getKey()) == 0) {
+            // 插入节点元素等于当前节点元素
+            element = node.element;
+        } else {
+            // 插入节点元素大于当前节点元素
+            if (right == null) {
+                // 当前节点右子节点为空，直接设置为当前节点的右子结点
+                right = node;
+                node.parent = this;
+            } else {
+                // 当前节点右子节点不为空，递归调用右子结点进行插入
+                right.addNode(node);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "【key:" + element.getKey() +
+                ",color:" + color.getRemark() +
+                "】";
     }
 }

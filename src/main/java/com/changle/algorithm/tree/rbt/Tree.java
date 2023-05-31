@@ -22,35 +22,15 @@ public class Tree<K extends Comparable<K>, V> {
      * @param element 待插入的节点元素
      */
     public void insert(Element<K, V> element) {
-        // 向树中添加一个节点
+        // 插入节点，默认插入节点为红色
+        final Node<K, V> node = new Node<>(element);
         if (this.root == null) {
-            this.root = new Node<>(element, null, ColorEnum.BLACK);
-            return;
-        }
-        Node<K, V> node = this.root;
-        // 找寻元素插入位置对应的父节点
-        Node<K, V> insertParentNode = node;
-        while (node != null) {
-            if (element.getKey().compareTo(node.getElement().getKey()) < 0) {
-                node = node.getLeft();
-            } else if (element.getKey().compareTo(node.getElement().getKey()) == 0) {
-                node.setElement(element);
-                return;
-            } else {
-                node = node.getRight();
-            }
-            if (node != null) {
-                insertParentNode = node;
-            }
-        }
-        // 找到元素插入位置对应的父节点，创建节点，并和父节点建立关联关系
-        Node<K, V> newNode = new Node<>(element, insertParentNode, ColorEnum.BLACK);
-        if (element.getKey().compareTo(insertParentNode.getElement().getKey()) < 0) {
-            insertParentNode.setLeft(newNode);
+            this.root = node;
         } else {
-            insertParentNode.setRight(newNode);
+            this.root.addNode(node);
         }
-        // 通过旋转和变色进行调整
+        // 旋转或变色以便符合红黑树特性
+        fixAfterAdd(node);
     }
 
     /**
@@ -63,13 +43,66 @@ public class Tree<K extends Comparable<K>, V> {
         return this.root;
     }
 
+
+    /**
+     * 插入元素后对树进行调整以便符合红黑树特性
+     *
+     * @param node 插入的节点
+     */
+    private void fixAfterAdd(Node<K, V> node) {
+        if (node == null) {
+            // 节点为空直接返回
+            return;
+        }
+        node.setColor(ColorEnum.RED);
+        if (node == this.root) {
+            // 节点是根节点直接设置为黑色返回
+            this.root.setColor(ColorEnum.BLACK);
+            return;
+        }
+        Node<K, V> parent = node.getParent();
+        Node<K, V> grandParent = parent.getParent();
+        // 节点的父节点为红色才需要调整
+        if (!parent.getColor().isBlack()) {
+            Node<K, V> uncle = parent == grandParent.getLeft() ? grandParent.getRight() : grandParent.getLeft();
+            if (uncle == null || uncle.getColor().isBlack()) {
+                // 3节点添加后存在LL、RR、LR、RL四种情况需要调整，分别需要旋转+变色
+                if (node == parent.getLeft() && parent == grandParent.getLeft()) {
+                    // LL型，对祖先节点进行右旋+变色处理
+                    rightRotate(grandParent);
+                } else if (node == parent.getRight() && parent == grandParent.getRight()) {
+                    // RR型，对祖先节点进行左旋+变色处理
+                    leftRotate(grandParent);
+                } else if (node == parent.getRight() && parent == grandParent.getLeft()) {
+                    // LR型，对父节点进行左旋+对祖先节点进行右旋+变色处理
+                    leftRotate(parent);
+                    rightRotate(grandParent);
+                } else {
+                    // RL型，对父节点进行右旋+对祖先节点进行左旋+变色处理
+                    rightRotate(parent);
+                    leftRotate(grandParent);
+                }
+                grandParent.setColor(ColorEnum.RED);
+                parent.setColor(ColorEnum.BLACK);
+            } else {
+                // 4节点添加后直接变色即可
+                grandParent.setColor(ColorEnum.RED);
+                parent.setColor(ColorEnum.BLACK);
+                uncle.setColor(ColorEnum.BLACK);
+                // 4节点情况变色后可能导致更高层级的产生连续两个红色节点相邻，需要递归调整
+                fixAfterAdd(grandParent);
+            }
+        }
+        this.root.setColor(ColorEnum.BLACK);
+    }
+
     /**
      * 对某个树节点进行左旋操作
-     * p                r
-     * / \              / \
-     * l   r    -->     p   rr
-     * / \          / \
-     * rl  rr       l  rl
+     *     p                r
+     *    / \              / \
+     *   l   r    -->     p   rr
+     *      / \          / \
+     *     rl  rr       l  rl
      *
      * @param node 待进行左旋操作的节点
      */
@@ -93,10 +126,10 @@ public class Tree<K extends Comparable<K>, V> {
 
     /**
      * 对某个树节点进行右旋操作
-     * p                l
-     * / \              / \
-     * l   r    -->     ll   p
-     * / \                   / \
+     *     p                l
+     *    / \              / \
+     *   l   r    -->     ll   p
+     *  / \                   / \
      * ll  lr                lr  r
      *
      * @param node 待进行右旋操作的节点

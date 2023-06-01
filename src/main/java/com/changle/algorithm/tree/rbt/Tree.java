@@ -22,7 +22,7 @@ public class Tree<K extends Comparable<K>, V> {
      * @param element 待插入的节点元素
      */
     public void insert(Element<K, V> element) {
-        // 插入节点，默认插入节点为红色
+        // 插入节点
         Node<K, V> node = new Node<>(element);
         if (this.root == null) {
             this.root = node;
@@ -43,14 +43,12 @@ public class Tree<K extends Comparable<K>, V> {
         if (this.root == null) {
             return null;
         }
+        // 找到待删除的节点
         Node<K, V> node = this.root.getNode(element);
-        if (node == null) {
-            return null;
-        }
-//        if (element.getKey().compareTo(this.root.getElement().getKey()) == 0) {
-//            this.root = null;
-//            return node;
-//        }
+        // 删除节点
+        removeNode(node);
+        // 删除后调整以便符合红黑树特性
+        fixAfterRemove(node);
         return node;
     }
 
@@ -60,6 +58,10 @@ public class Tree<K extends Comparable<K>, V> {
      * @param node 待删除的节点
      */
     private void removeNode(Node<K, V> node) {
+        if (node == null) {
+            // 空节点无需任何操作
+            return;
+        }
         if (node.getLeft() != null && node.getRight() != null) {
             // 有左右两个子节点，找到前驱/后继节点，然后使用前驱/后继节点覆盖当前节点
             Node<K, V> predecessor = node.getPredecessor();
@@ -72,24 +74,27 @@ public class Tree<K extends Comparable<K>, V> {
             node.setElement(child.getElement());
             // 删除唯一子节点
             removeNode(child);
-            if (child.getColor().isBlack()) {
-                fixAfterRemove(child);
-            }
+//            if (child.getColor().isBlack()) {
+//                fixAfterRemove(child);
+//            }
         } else if (node.getParent() == null) {
             // 删除节点为根节点
             root = null;
         } else {
-            // 删除节点为非根节点
-            if (node.getColor().isBlack()) {
-                fixAfterRemove(node);
-            }
+            // 删除节点为非根叶子节点
+//            if (node.getColor().isBlack()) {
+//                fixAfterRemove(node);
+//            }
             if (node == node.getParent().getLeft()) {
                 node.getParent().setLeft(null);
             } else {
                 node.getParent().setRight(null);
             }
-            node.setParent(null);
         }
+        // 如果删除的是3、4节点，则下溢为2、3节点
+        // 如果删除的是2节点，则从临近的3节点或4节点的兄弟节点借一个元素
+        // 如果临近的兄弟节点也为2节点，则父节点下溢
+        // 如果父节点也为2节点，则
     }
 
     /**
@@ -111,6 +116,7 @@ public class Tree<K extends Comparable<K>, V> {
             // 节点为空直接返回
             return;
         }
+        // 默认插入节点为红色
         node.setColor(ColorEnum.RED);
         if (node == this.root) {
             // 节点是根节点直接设置为黑色返回
@@ -124,6 +130,8 @@ public class Tree<K extends Comparable<K>, V> {
             Node<K, V> uncle = parent == grandParent.getLeft() ? grandParent.getRight() : grandParent.getLeft();
             if (uncle == null || uncle.getColor().isBlack()) {
                 // 3节点添加后存在LL、RR、LR、RL四种情况需要调整，分别需要旋转+变色
+                // 1. uncle为空，表示当前节点为新添加的节点
+                // 2. uncle不为空，且颜色为黑色，表示当前节点为4节点上溢导致的递归调整情况
                 if (node == parent.getLeft() && parent == grandParent.getLeft()) {
                     // LL型，对祖先节点进行右旋+变色处理
                     rightRotate(grandParent);
@@ -142,11 +150,12 @@ public class Tree<K extends Comparable<K>, V> {
                 grandParent.setColor(ColorEnum.RED);
                 parent.setColor(ColorEnum.BLACK);
             } else {
-                // 4节点添加后直接变色即可
+                // 4节点添加后会出现上溢，处理情况为直接变色即可
                 grandParent.setColor(ColorEnum.RED);
                 parent.setColor(ColorEnum.BLACK);
                 uncle.setColor(ColorEnum.BLACK);
-                // 4节点情况变色后可能导致更高层级的产生连续两个红色节点相邻，需要递归调整
+                // 4节点情况变色后可能导致更高层级的产生连续两个红色节点相邻
+                // 产生连续两个红色节点相邻，相当于新的红色节点为插入节点，以新的红色节点为起点递归调整
                 fixAfterAdd(grandParent);
             }
         }

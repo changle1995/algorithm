@@ -12,11 +12,11 @@ public enum ColorEnum {
     /**
      * 红色节点
      */
-    RED(false, "红色"),
+    RED(false, "R"),
     /**
      * 黑色节点
      */
-    BLACK(true, "黑色");
+    BLACK(true, "B");
     /**
      * 颜色值
      */

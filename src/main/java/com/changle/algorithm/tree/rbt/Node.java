@@ -145,8 +145,8 @@ public class Node<K extends Comparable<K>, V> {
 
     @Override
     public String toString() {
-        return "【key:" + element.getKey() +
-                ",color:" + color.getRemark() +
+        return "【" + element.getKey() +
+                "," + color.getRemark() +
                 "】";
     }
 }

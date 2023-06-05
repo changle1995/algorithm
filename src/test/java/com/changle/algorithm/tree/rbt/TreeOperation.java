@@ -8,6 +8,8 @@ package com.changle.algorithm.tree.rbt;
  * @date 2023-05-31
  */
 public class TreeOperation {
+    private static final String blank = "    ";
+
     // 用于获得树的层数
     public static <K extends Comparable<K>, V> int getTreeDepth(Node<K, V> root) {
         return root == null ? 0 : (1 + Math.max(getTreeDepth(root.getLeft()), getTreeDepth(root.getRight())));
@@ -28,13 +30,13 @@ public class TreeOperation {
 
         // 对左儿子进行判断，若有左儿子，则记录相应的"/"与左儿子的值
         if (currNode.getLeft() != null) {
-            res[rowIndex + 1][columnIndex - gap] = "/";
+            res[rowIndex + 1][columnIndex - gap] = blank + "/";
             writeArray(currNode.getLeft(), rowIndex + 2, columnIndex - gap * 2, res, treeDepth);
         }
 
         // 对右儿子进行判断，若有右儿子，则记录相应的"\"与右儿子的值
         if (currNode.getRight() != null) {
-            res[rowIndex + 1][columnIndex + gap] = "\\";
+            res[rowIndex + 1][columnIndex + gap] = blank + "\\";
             writeArray(currNode.getRight(), rowIndex + 2, columnIndex + gap * 2, res, treeDepth);
         }
     }
@@ -53,7 +55,7 @@ public class TreeOperation {
         // 对数组进行初始化，默认为一个空格
         for (int i = 0; i < arrayHeight; i++) {
             for (int j = 0; j < arrayWidth; j++) {
-                res[i][j] = " ";
+                res[i][j] = blank;
             }
         }
 
@@ -64,11 +66,8 @@ public class TreeOperation {
         // 此时，已经将所有需要显示的元素储存到了二维数组中，将其拼接并打印即可
         for (String[] line : res) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < line.length; i++) {
-                sb.append(line[i]);
-                if (line[i].length() > 1 && i <= line.length - 1) {
-                    i += line[i].length() > 4 ? 2 : line[i].length() - 1;
-                }
+            for (String s : line) {
+                sb.append(s);
             }
             System.out.println(sb);
         }

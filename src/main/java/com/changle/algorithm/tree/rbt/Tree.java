@@ -47,8 +47,6 @@ public class Tree<K extends Comparable<K>, V> {
         Node<K, V> node = this.root.getNode(element);
         // 删除节点
         removeNode(node);
-        // 删除后调整以便符合红黑树特性
-        fixAfterRemove(node);
         return node;
     }
 
@@ -66,44 +64,111 @@ public class Tree<K extends Comparable<K>, V> {
             // 有左右两个子节点，找到前驱/后继节点，然后使用前驱/后继节点覆盖当前节点
             Node<K, V> predecessor = node.getPredecessor();
             node.setElement(predecessor.getElement());
-            // 删除前驱节点
-            removeNode(predecessor);
-        } else if (node.getLeft() != null || node.getRight() != null) {
+            // 需要删除的节点变为前驱/后继节点
+            node = predecessor;
+        }
+
+        Node<K, V> replacement = node.getLeft() != null ? node.getLeft() : node.getRight();
+        if (replacement != null) {
             // 只有一个子节点，使用子节点替换当前节点
-            Node<K, V> child = node.getLeft() == null ? node.getRight() : node.getLeft();
-            node.setElement(child.getElement());
-            // 删除唯一子节点
-            removeNode(child);
-//            if (child.getColor().isBlack()) {
-//                fixAfterRemove(child);
-//            }
+            Node<K, V> parent = node.getParent();
+            replacement.setParent(parent);
+            if (parent == null) {
+                root = replacement;
+            } else if (node == parent.getLeft()) {
+                parent.setLeft(replacement);
+            } else {
+                parent.setRight(replacement);
+            }
+            // 删除后调整
+            fixAfterRemove(replacement);
         } else if (node.getParent() == null) {
             // 删除节点为根节点
             root = null;
         } else {
             // 删除节点为非根叶子节点
-//            if (node.getColor().isBlack()) {
-//                fixAfterRemove(node);
-//            }
+            // 非根叶子节点删除需要先进行调整
+            fixAfterRemove(node);
             if (node == node.getParent().getLeft()) {
                 node.getParent().setLeft(null);
             } else {
                 node.getParent().setRight(null);
             }
         }
-        // 如果删除的是3、4节点，则下溢为2、3节点
-        // 如果删除的是2节点，则从临近的3节点或4节点的兄弟节点借一个元素
-        // 如果临近的兄弟节点也为2节点，则父节点下溢
-        // 如果父节点也为2节点，则
     }
 
     /**
-     * 删除元素后对树进行调整以便符合红黑树特性
+     * 删除非根节点后对树进行调整以便符合红黑树特性
      *
      * @param node 删除的节点
      */
     private void fixAfterRemove(Node<K, V> node) {
-
+        while (node != root && node.getColor().isBlack()) {
+            if (node == node.getParent().getLeft()) {
+                // 删除节点是左子结点的情况
+                // 寻找在234树中对应的真正的兄弟节点
+                Node<K, V> bro = node.getParent().getRight();
+                if (!bro.getColor().isBlack()) {
+                    bro.setColor(ColorEnum.BLACK);
+                    node.getParent().setColor(ColorEnum.RED);
+                    leftRotate(node.getParent());
+                    bro = node.getParent().getRight();
+                }
+                if ((bro.getLeft() == null || bro.getLeft().getColor().isBlack())
+                        && (bro.getRight() == null || bro.getRight().getColor().isBlack())) {
+                    // 兄弟节点也是2节点
+                    bro.setColor(ColorEnum.RED);
+                    node = node.getParent();
+                } else {
+                    // 兄弟节点是3、4节点
+                    if (bro.getRight() == null) {
+                        // 如果兄弟节点是3节点，且是左倾的情况，需要先进行变色+右旋处理，以便删除元素后再进行左旋处理
+                        bro.getLeft().setColor(ColorEnum.BLACK);
+                        bro.setColor(ColorEnum.RED);
+                        rightRotate(bro);
+                        bro = node.getParent().getRight();
+                    }
+                    // 3节点右旋处理后，3、4节点可以统一进行变色+左旋处理
+                    bro.getRight().setColor(bro.getColor());
+                    bro.setColor(node.getParent().getColor());
+                    node.getParent().setColor(node.getColor());
+                    leftRotate(node.getParent());
+                    break;
+                }
+            } else {
+                // 删除节点是右子结点的情况
+                // 寻找在234树中对应的真正的兄弟节点
+                Node<K, V> bro = node.getParent().getLeft();
+                if (!bro.getColor().isBlack()) {
+                    bro.setColor(ColorEnum.BLACK);
+                    node.getParent().setColor(ColorEnum.RED);
+                    rightRotate(node.getParent());
+                    bro = node.getParent().getLeft();
+                }
+                if ((bro.getLeft() == null || bro.getLeft().getColor().isBlack())
+                        && (bro.getRight() == null || bro.getRight().getColor().isBlack())) {
+                    // 兄弟节点也是2节点
+                    bro.setColor(ColorEnum.RED);
+                    node = node.getParent();
+                } else {
+                    // 兄弟节点是3、4节点
+                    if (bro.getLeft() == null) {
+                        // 如果兄弟节点是3节点，且是右倾的情况，需要先进行变色+左旋处理，以便删除元素后再进行右旋处理
+                        bro.getRight().setColor(ColorEnum.BLACK);
+                        bro.setColor(ColorEnum.RED);
+                        leftRotate(bro);
+                        bro = node.getParent().getLeft();
+                    }
+                    // 3节点左旋处理后，3、4节点可以统一进行变色+右旋处理
+                    bro.getLeft().setColor(bro.getColor());
+                    bro.setColor(node.getParent().getColor());
+                    node.getParent().setColor(node.getColor());
+                    rightRotate(node.getParent());
+                    break;
+                }
+            }
+        }
+        node.setColor(ColorEnum.BLACK);
     }
 
     /**
@@ -118,43 +183,46 @@ public class Tree<K extends Comparable<K>, V> {
         }
         // 默认插入节点为红色
         node.setColor(ColorEnum.RED);
-        if (node == this.root) {
-            // 节点是根节点直接设置为黑色返回
-            this.root.setColor(ColorEnum.BLACK);
-            return;
-        }
         Node<K, V> parent = node.getParent();
-        // 节点的父节点为红色才需要调整
-        if (!parent.getColor().isBlack()) {
+        // 节点的父节点为红色（对应于3节点升为4节点、4节点上溢两种情况）才需要调整
+        if (parent != null && !parent.getColor().isBlack()) {
             Node<K, V> grandParent = parent.getParent();
             Node<K, V> uncle = parent == grandParent.getLeft() ? grandParent.getRight() : grandParent.getLeft();
             if (uncle == null || uncle.getColor().isBlack()) {
-                // 3节点添加后存在LL、RR、LR、RL四种情况需要调整，分别需要旋转+变色
+                // 3节点升为4节点，存在LL、RR、LR、RL四种情况需要调整，分别需要旋转+变色
                 // 1. uncle为空，表示当前节点为新添加的节点
                 // 2. uncle不为空，且颜色为黑色，表示当前节点为4节点上溢导致的递归调整情况
                 if (node == parent.getLeft() && parent == grandParent.getLeft()) {
                     // LL型，对祖先节点进行右旋+变色处理
+                    grandParent.setColor(ColorEnum.RED);
+                    parent.setColor(ColorEnum.BLACK);
                     rightRotate(grandParent);
                 } else if (node == parent.getRight() && parent == grandParent.getRight()) {
                     // RR型，对祖先节点进行左旋+变色处理
+                    grandParent.setColor(ColorEnum.RED);
+                    parent.setColor(ColorEnum.BLACK);
                     leftRotate(grandParent);
                 } else if (node == parent.getRight() && parent == grandParent.getLeft()) {
                     // LR型，对父节点进行左旋+对祖先节点进行右旋+变色处理
+                    grandParent.setColor(ColorEnum.RED);
+                    parent.setColor(ColorEnum.RED);
+                    node.setColor(ColorEnum.BLACK);
                     leftRotate(parent);
                     rightRotate(grandParent);
                 } else {
                     // RL型，对父节点进行右旋+对祖先节点进行左旋+变色处理
+                    grandParent.setColor(ColorEnum.RED);
+                    parent.setColor(ColorEnum.RED);
+                    node.setColor(ColorEnum.BLACK);
                     rightRotate(parent);
                     leftRotate(grandParent);
                 }
-                grandParent.setColor(ColorEnum.RED);
-                parent.setColor(ColorEnum.BLACK);
             } else {
-                // 4节点添加后会出现上溢，处理情况为直接变色即可
+                // 4节点上溢，处理情况为直接变色即可
                 grandParent.setColor(ColorEnum.RED);
                 parent.setColor(ColorEnum.BLACK);
                 uncle.setColor(ColorEnum.BLACK);
-                // 4节点情况变色后可能导致更高层级的产生连续两个红色节点相邻
+                // 4节点上溢变色后可能导致更高层级的产生连续两个红色节点相邻
                 // 产生连续两个红色节点相邻，相当于新的红色节点为插入节点，以新的红色节点为起点递归调整
                 fixAfterAdd(grandParent);
             }
